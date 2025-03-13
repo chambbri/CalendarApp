@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",               // Output using the ESNext module format
+    "target": "ESNext",               // Use the latest JavaScript features
+    "moduleResolution": "node",       // Use Node.js-style resolution
+    "esModuleInterop": true,          // Ensure compatibility with CommonJS modules
+    "skipLibCheck": true,             // Skip library checking (useful in some cases)
+    "outDir": "./dist",               // Output transpiled files to a 'dist' folder
+    "allowJs": true,                  // Allow JavaScript files
+    "resolveJsonModule": true,        // Allow importing JSON files
+    "isolatedModules": true,          // Ensure files are treated as isolated modules
+    "forceConsistentCasingInFileNames": true,
+  }, 
+  "ts-node": {
+      "experimentalSpecifierResolution": "node",
+      "esm": true,
+    },
+}
