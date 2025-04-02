@@ -1,12 +1,16 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
-import MyCalendar from './components/Calendar'
+import Home from "./pages/Home"
+import CreateEvent from './pages/CreateEvent'
 
-const App: React.FC = () => {
+const App = () => {
   return (
-    <div>
-      <h1 style={{ textAlign: "center" }}>My Event Calendar</h1>
-      <MyCalendar />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/createevent" element={<CreateEvent />} />
+      </Routes>
+    </Router>
   )
 }
 

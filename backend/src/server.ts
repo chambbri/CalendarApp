@@ -1,11 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import * as dotenv from 'dotenv';
 import eventRoutes from './routes/eventRoutes';
 
 console.log(eventRoutes);
 
 const app = express();
+app.use(cors({
+    origin: 'http://localhost:5173'
+}));
 dotenv.config();
 const PORT = process.env.PORT || 8000;
 const MONGO_URI = process.env.MONGO_URI as string
