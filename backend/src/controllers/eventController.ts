@@ -51,4 +51,18 @@ const deleteEventHandler = async (req: Request, res: Response) => {
     }
 };
 
-export {createEventHandler, updateEventHandler, getEventsHandler, deleteEventHandler};
+const getEventByIdHandler = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { id } = req.params;
+        const event = await findEvent({ _id: id }, '', 1);
+        if (!event || event.length === 0) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+        res.status(200).json(event[0]);
+    } catch (error) {
+        console.error('Error fetching event: ', error);
+        res.status(500).json({ error: 'Failed to fetch event' });
+    }
+};
+
+export {createEventHandler, updateEventHandler, getEventsHandler, deleteEventHandler, getEventByIdHandler};

@@ -1,12 +1,16 @@
 import axios from "axios";
 
-export interface Event {
+export interface CreateEventI {
     title: string,
     description: string,
     startDate: Date;
     endDate: Date;
 }
-export const postEvent = async (eventData: Event) => {
+
+export interface EventI extends CreateEventI {
+  _id: string;
+}
+export const postEvent = async (eventData: CreateEventI) => {
     try {
         const response = await axios.post('http://localhost:8000/api/events', eventData)
         console.log("Event created", response.data);
