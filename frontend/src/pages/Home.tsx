@@ -39,18 +39,38 @@ const Home = () => {
         navigate(`/editevent/${eventId}`);
     };
 
+    const createEventButton = `
+        rounded-lg 
+        pt-3 pb-3 pl-7 pr-7 
+        border border-transparent 
+        font-medium 
+        bg-[#644444] 
+        cursor-pointer 
+        hover:border-white 
+        transition duration-250`;
+
     return (
         <div>
-            <h1>Social Event Creation App</h1>
-            <Link to="/eventform">
-                <button>Create New Event</button>
-            </Link>
-            <h2>My Events</h2>
-            {events.length > 0 ? (
-                <EventList events={events} onDeleteEvent={onDeleteEvent} onEditEvent={onEditEvent} />
-            ) : (
-                <p>No events found.</p>
-            )}
+            <header className="flex flex-col items-center justify-center pt-16 pb-16">
+                <div className="flex flex-col items-center gap-y-4">
+                    <h1 className="text-center text-3xl font-bold">InviteMe</h1>
+                    <Link to="/eventform">
+                        <button className={createEventButton}>
+                            Create Event
+                        </button>
+                    </Link>
+                </div>
+            </header>
+            <div className="flex flex-col pt-8 p-4 gap-y-4">
+                <h2>Your Events</h2>
+                <div>
+                    {events.length > 0 ? (
+                            <EventList events={events} onDeleteEvent={onDeleteEvent} onEditEvent={onEditEvent} />
+                        ) : (
+                            <p>No events found.</p>
+                        )}
+                </div>
+            </div>
         </div>
     );
 };

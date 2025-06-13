@@ -16,6 +16,7 @@ const EventForm = ({ initialData, mode }: Props) => {
         description: "",
         startDate: new Date(),
         endDate: new Date(),
+        location: ""
     });
 
     const [showTime, setShowTime] = useState(false);
@@ -23,14 +24,15 @@ const EventForm = ({ initialData, mode }: Props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-    if (initialData) {
-      setEventData({
-        title: initialData.title,
-        description: initialData.description,
-        startDate: new Date(initialData.startDate),
-        endDate: new Date(initialData.endDate),
-      });
-    }
+        if (initialData) {
+        setEventData({
+            title: initialData.title,
+            description: initialData.description,
+            startDate: new Date(initialData.startDate),
+            endDate: new Date(initialData.endDate),
+            location: initialData.location
+        });
+        }
     }, [initialData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,15 +65,19 @@ const EventForm = ({ initialData, mode }: Props) => {
     };
 
     return (
-        <section className="add-event-container">
-            <form onSubmit={handleSubmit} className="add-event-form">
+        <section className="">
+            <form onSubmit={handleSubmit} className="flex flex-col border-2 items-left gap-y-2 h-max w-1/2">
                 <div className="add-event-form">
                     <label htmlFor="event-title">Event Title</label>
-                    <input type="text" name="title" id="event-title" value={eventData.title} onChange={handleChange} required/>
+                    <input type="text" name="title" id="event-title" value={eventData.title} onChange={handleChange} required className="bg-white"/>
                 </div>
                 <div className="add-event-form">
                     <label htmlFor="event-description">Description</label>
                     <input type="text" name="description" id="event-description" value={eventData.description} onChange={handleChange}/>
+                </div>
+                <div className="add-event-form">
+                    <label htmlFor="event-location">Location</label>
+                    <input type="text" name="location" id="event-location" value={eventData.location} onChange={handleChange}/>
                 </div>
                 <div className="add-event-form">
                     <label>

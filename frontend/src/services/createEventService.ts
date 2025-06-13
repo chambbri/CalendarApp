@@ -5,6 +5,7 @@ export interface CreateEventI {
     description: string,
     startDate: Date;
     endDate: Date;
+    location: string
 }
 
 export interface EventI extends CreateEventI {

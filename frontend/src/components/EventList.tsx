@@ -11,18 +11,8 @@ export const EventList = ({
     onEditEvent: (eventId: String) => void
 }) => {
     return (
-        <table id="eventlist">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {events.map((event, i) => <Event event={event} onDeleteEvent={onDeleteEvent} onEditEvent={onEditEvent} key={i}></Event>)}
-            </tbody>
-        </table>
+        <div className="flex flex-wrap gap-x-8">
+            {events.map((event, i) => <Event event={event} onDeleteEvent={onDeleteEvent} onEditEvent={onEditEvent} key={i}></Event>)}
+        </div>
     )
 }
