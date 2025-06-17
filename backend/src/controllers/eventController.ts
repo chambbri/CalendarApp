@@ -3,8 +3,8 @@ import { Event, createEvent, updateEvent, deleteEvent, findEvent} from '../model
 
 const createEventHandler = async (req: Request, res: Response) => {
     try {
-        const { title, description, startDate, endDate } = req.body;
-        const event = await createEvent(title, description, startDate, endDate);
+        const { title, description, startDate, endDate, location } = req.body;
+        const event = await createEvent(title, description, startDate, endDate, location);
         res.status(201).json({ status: 'ok', event });
     } catch (error) {
         console.error('Error creating event: ', error);
@@ -14,7 +14,7 @@ const createEventHandler = async (req: Request, res: Response) => {
 
 const updateEventHandler = async (req: Request, res: Response) => {
     try {
-        const event = await updateEvent(req.params.id, req.body.title, req.body.description, req.body.startDate, req.body.endDate);
+        const event = await updateEvent(req.params.id, req.body.title, req.body.description, req.body.startDate, req.body.endDate, req.body.location);
         if (event) {
             res.status(200).json({ status: 'ok', event });
         } else {

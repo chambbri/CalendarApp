@@ -3,16 +3,12 @@ import { Event } from './Event'
 
 export const EventList = ({ 
     events, 
-    onDeleteEvent,
-    onEditEvent,
 }: {
     events:EventI[]; 
-    onDeleteEvent: (_id: string) => void; 
-    onEditEvent: (eventId: String) => void
 }) => {
     return (
-        <div className="flex flex-wrap gap-x-8">
-            {events.map((event, i) => <Event event={event} onDeleteEvent={onDeleteEvent} onEditEvent={onEditEvent} key={i}></Event>)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 med:grid-cols-3 lg:grid-cols-4 gap-6">
+            {events.map((event, i) => <Event event={event} key={i}></Event>)}
         </div>
     )
 }

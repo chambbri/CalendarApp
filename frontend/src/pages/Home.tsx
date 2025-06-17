@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { getEvents } from "../services/getEventsService";
-import { deleteEvent } from "../services/deleteEventService";
 import { EventI } from "../services/createEventService";
 import { EventList } from "../components/EventList";
 
@@ -22,22 +20,6 @@ const Home = () => {
     useEffect(() => {
         fetchEvents();
     }, []);
-
-    const onDeleteEvent = async (_id: String) => {
-        try {
-            const response = await deleteEvent(_id);
-            console.log("Deleted event. Status:", response.status)
-            fetchEvents();
-        } catch (error) {
-            console.error("Error deleting event:", error);
-        }
-    }
-
-    const navigate = useNavigate();
-
-    const onEditEvent = (eventId: String) => {
-        navigate(`/editevent/${eventId}`);
-    };
 
     const createEventButton = `
         rounded-lg 
@@ -62,10 +44,10 @@ const Home = () => {
                 </div>
             </header>
             <div className="flex flex-col pt-8 p-4 gap-y-4">
-                <h2>Your Events</h2>
+                <h2 className="font-semibold">Your Events</h2>
                 <div>
                     {events.length > 0 ? (
-                            <EventList events={events} onDeleteEvent={onDeleteEvent} onEditEvent={onEditEvent} />
+                            <EventList events={events} />
                         ) : (
                             <p>No events found.</p>
                         )}

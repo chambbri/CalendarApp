@@ -6,6 +6,7 @@ interface IEvent extends Document {
     description?: string;
     startDate: Date;
     endDate: Date;
+    location?: string;
 }
 
 // create schema for events
@@ -14,14 +15,15 @@ const eventSchema = new Schema<IEvent>({
     description: { type: String, required: false },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
+    location: { type: String, required: false },
 });
 
 const Event = model<IEvent>('Event', eventSchema);
 
 // add necessary CRUD functionality for database
-const createEvent = async (title: string, description: string, startDate: Date, endDate: Date): Promise<IEvent> => {
+const createEvent = async (title: string, description: string, startDate: Date, endDate: Date, location: string): Promise<IEvent> => {
     try {
-        const event = new Event({ title, description, startDate, endDate });
+        const event = new Event({ title, description, startDate, endDate, location });
         return await event.save();
     } catch (error) {
         console.error('Error creating event: ', error);
@@ -29,11 +31,11 @@ const createEvent = async (title: string, description: string, startDate: Date, 
     }
 };
 
-const updateEvent = async (_id: string, title: string, description: string, startDate: Date, endDate: Date): Promise<IEvent | null> => {
+const updateEvent = async (_id: string, title: string, description: string, startDate: Date, endDate: Date, location: string): Promise<IEvent | null> => {
     try {
         const result = await Event.findByIdAndUpdate(
             _id,
-            { title, description, startDate, endDate },
+            { title, description, startDate, endDate, location },
             {new: true}
         );
         return result;
