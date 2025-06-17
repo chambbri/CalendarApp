@@ -19,7 +19,7 @@ const EventForm = ({ initialData, mode }: Props) => {
         location: ""
     });
 
-    const [showTime, setShowTime] = useState(false);
+    const [showTime, setShowTime] = useState(true);
     const [startSelected, setStartSelected] = useState(false);
     const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ const EventForm = ({ initialData, mode }: Props) => {
         }
     }, [initialData]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setEventData({ ...eventData, [e.target.name]: e.target.value });
     };
 
@@ -64,55 +64,75 @@ const EventForm = ({ initialData, mode }: Props) => {
         }
     };
 
+    const createEventButton = `
+        rounded-lg 
+        pt-3 pb-3 pl-7 pr-7 
+        border border-transparent 
+        font-medium 
+        bg-[#644444] 
+        cursor-pointer 
+        hover:border-white 
+        transition duration-250`;
+
     return (
-        <section className="">
-            <form onSubmit={handleSubmit} className="flex flex-col border-2 items-left gap-y-2 h-max w-1/2">
-                <div className="add-event-form">
-                    <label htmlFor="event-title">Event Title</label>
-                    <input type="text" name="title" id="event-title" value={eventData.title} onChange={handleChange} required className="bg-white"/>
-                </div>
-                <div className="add-event-form">
-                    <label htmlFor="event-description">Description</label>
-                    <input type="text" name="description" id="event-description" value={eventData.description} onChange={handleChange}/>
-                </div>
-                <div className="add-event-form">
-                    <label htmlFor="event-location">Location</label>
-                    <input type="text" name="location" id="event-location" value={eventData.location} onChange={handleChange}/>
-                </div>
-                <div className="add-event-form">
-                    <label>
-                        <input type="checkbox" checked={showTime} onChange={() => setShowTime(!showTime)} />
-                        Include Time
-                    </label>
-                </div>
-                <div className="add-event-form">
-                    <label htmlFor="event-start">Event Start</label>
-                    <DatePicker 
-                        selected={eventData.startDate} 
-                        onChange={handleStartDateChange}
-                        locale="en-US"
-                        showTimeSelect={showTime}
-                        timeFormat="p"
-                        timeIntervals={15}
-                        dateFormat={showTime ? "Pp" : "P"} 
-                        placeholderText="Select Start Date"
-                    />
-                </div>
-                {(startSelected || mode === 'edit') && (
-                    <div className="add-event-form">
-                        <label htmlFor="event-end">Event End</label>
+        <section className="flex items-center justify-center min-h-screen">
+            <form onSubmit={handleSubmit} className="flex flex-col border-2 items-left p-6 gap-y-4 w-1/2 shadow-sm shadow-black">
+                <div className="flex flex-col items-left p-6 gap-y-4 md:w-1/2">
+                    <div className="flex gap-x-4">
+                        <label htmlFor="event-title">Event Title</label>
+                        <input type="text" name="title" id="event-title" value={eventData.title} onChange={handleChange} required className="rounded border"/>
+                    </div>
+                    <div className="flex gap-x-4">
+                        <label htmlFor="event-location">Location</label>
+                        <input type="text" name="location" id="event-location" value={eventData.location} onChange={handleChange} className="rounded border"/>
+                    </div>
+                    <div className="flex gap-x-4">
+                        <label>
+                            Include Time
+                            <input type="checkbox" checked={showTime} onChange={() => setShowTime(!showTime)} className="p-2" />
+                        </label>
+                    </div>
+                    <div className="flex gap-x-4">
+                        <label htmlFor="event-start">Event Start</label>
                         <DatePicker 
-                            selected={eventData.endDate} 
-                            onChange={(date) => setEventData({ ...eventData, endDate: date ?? new Date() })}
+                            selected={eventData.startDate} 
+                            onChange={handleStartDateChange}
                             locale="en-US"
                             showTimeSelect={showTime}
+                            timeFormat="p"
                             timeIntervals={15}
-                            dateFormat={showTime ? "Pp" : "P"}
-                            minDate={eventData.startDate}
+                            dateFormat={showTime ? "Pp" : "P"} 
+                            placeholderText="Select Start Date"
+                            className="rounded border"
                         />
                     </div>
-                )}
-                <button type="submit">{mode === "edit" ? "Update" : "Create"} Event</button>
+                    {(startSelected || mode === 'edit') && (
+                        <div className="flex gap-x-4">
+                            <label htmlFor="event-end">Event End</label>
+                            <DatePicker 
+                                selected={eventData.endDate} 
+                                onChange={(date) => setEventData({ ...eventData, endDate: date ?? new Date() })}
+                                locale="en-US"
+                                showTimeSelect={showTime}
+                                timeIntervals={15}
+                                dateFormat={showTime ? "Pp" : "P"}
+                                minDate={eventData.startDate}
+                                className="rounded border"
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className="flex-1">
+                    <textarea
+                        placeholder="Description (Optional)"
+                        rows={8}
+                        className="w-full h-full border p-2 rounded resize-none"
+                        name="description"
+                        value={eventData.description}
+                        onChange={handleChange}
+                    ></textarea>
+                </div>
+                <button type="submit" className={createEventButton}>{mode === "edit" ? "Update" : "Create"} Event</button>
             </form>
         </section>
     )
