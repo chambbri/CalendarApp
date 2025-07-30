@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
-import pool from '../db/db';
+import pool from './db/db';
 import cors from 'cors';
 import eventRoutes from './routes/eventRoutes';
 

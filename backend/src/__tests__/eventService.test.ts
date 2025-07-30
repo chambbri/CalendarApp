@@ -1,5 +1,5 @@
 // Mock the entire db module FIRST
-jest.mock('../../db/db', () => {
+jest.mock('../db/db', () => {
   return {
     __esModule: true,
     default: {
@@ -10,7 +10,7 @@ jest.mock('../../db/db', () => {
 
 // Now import everything
 import { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent } from '../services/eventService';
-import pool from '../../db/db';
+import pool from '../db/db';
 
 // Get reference to the mocked query function
 const mockQuery = pool.query as jest.MockedFunction<any>;

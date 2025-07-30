@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 
 // Mock the database pool FIRST
-jest.mock('../../db/db', () => {
+jest.mock('../db/db', () => {
   return {
     __esModule: true,
     default: {
@@ -13,7 +13,7 @@ jest.mock('../../db/db', () => {
 
 // Now import everything that depends on the mock
 import eventRoutes from '../routes/eventRoutes';
-import pool from '../../db/db';
+import pool from '../db/db';
 
 // Get reference to the mocked query function
 const mockQuery = pool.query as jest.MockedFunction<any>;

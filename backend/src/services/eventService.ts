@@ -1,4 +1,4 @@
-import pool from '../../db/db';
+import pool from '../db/db';
 import { IEvent } from '../types/event';
 
 // add event to database
