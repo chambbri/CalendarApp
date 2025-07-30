@@ -7,7 +7,7 @@ export const Event = ( {
     event: EventI; 
 } ) => {
     return (
-        <Link to={`/events/${event._id}`} key={event._id}>
+        <Link to={`/events/${event.id}`} key={event.id}>
             <div className="flex flex-col w-full h-50 border-1 rounded-lg p-2 gap-y-2 shadow-black shadow-sm hover:opacity-70">
                 <div className="text-center font-semibold text-2xl truncate" title={event.location}>{event.title}</div>
                 <div className="line-clamp-1 text-ellipsis">Location: {event.location}</div>

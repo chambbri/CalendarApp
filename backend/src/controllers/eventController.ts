@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { Event, createEvent, updateEvent, deleteEvent, findEvent} from '../models/eventModel';
+import { createEvent, updateEvent, deleteEvent, getAllEvents, getEventById} from '../services/eventService';
 
-const createEventHandler = async (req: Request, res: Response) => {
+export const createEventHandler = async (req: Request, res: Response) => {
     try {
         const { title, description, startDate, endDate, location } = req.body;
         const event = await createEvent(title, description, startDate, endDate, location);
@@ -12,9 +12,17 @@ const createEventHandler = async (req: Request, res: Response) => {
     }
 };
 
-const updateEventHandler = async (req: Request, res: Response) => {
+export const updateEventHandler = async (req: Request, res: Response) => {
     try {
-        const event = await updateEvent(req.params.id, req.body.title, req.body.description, req.body.startDate, req.body.endDate, req.body.location);
+        const event = await updateEvent(
+            req.params.id, 
+            req.body.title, 
+            req.body.description, 
+            req.body.startDate, 
+            req.body.endDate, 
+            req.body.location
+        );
+        
         if (event) {
             res.status(200).json({ status: 'ok', event });
         } else {
@@ -26,22 +34,11 @@ const updateEventHandler = async (req: Request, res: Response) => {
     }
 };
 
-const getEventsHandler = async (req: Request, res: Response) => {
-    try {
-        const filter = req.query;
-        const events = await findEvent(filter, '', 0);
-        res.status(200).json({ status: 'ok', events });
-    } catch (error) {
-        console.error('Error fetching events: ', error);
-        res.status(500).json({ error: 'Failed to fetch events' })
-    }
-};
-
-const deleteEventHandler = async (req: Request, res: Response) => {
+export const deleteEventHandler = async (req: Request, res: Response) => {
     try{
         const event = await deleteEvent(req.params.id);
         if (event) {
-            res.status(200).json({ message: 'Event deleted succesfully' });
+            res.status(200).json({ message: 'Event deleted successfully' });
         } else {
             res.status(404).json({ error: 'Event not found' });
         }
@@ -51,18 +48,29 @@ const deleteEventHandler = async (req: Request, res: Response) => {
     }
 };
 
-const getEventByIdHandler = async (req: Request, res: Response): Promise<any> => {
+export const getEventsHandler = async (req: Request, res: Response) => {
+    try {
+        const events = await getAllEvents();
+        res.status(200).json({ status: 'ok', events });
+    } catch (error) {
+        console.error('Error fetching events: ', error);
+        res.status(500).json({ error: 'Failed to fetch events' });
+    }
+};
+
+export const getEventByIdHandler = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const event = await findEvent({ _id: id }, '', 1);
-        if (!event || event.length === 0) {
-            return res.status(404).json({ error: 'Event not found' });
+        const event = await getEventById(id);
+        
+        if (!event) {
+            res.status(404).json({ error: 'Event not found' });
+            return;
         }
-        res.status(200).json(event[0]);
+        
+        res.status(200).json(event);
     } catch (error) {
         console.error('Error fetching event: ', error);
         res.status(500).json({ error: 'Failed to fetch event' });
     }
 };
-
-export {createEventHandler, updateEventHandler, getEventsHandler, deleteEventHandler, getEventByIdHandler};

@@ -1,4 +1,3 @@
-// getEventsService.ts
 import axios from "axios";
 
 export const getEventById = async (id: string) => {
