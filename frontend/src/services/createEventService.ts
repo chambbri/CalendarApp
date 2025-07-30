@@ -9,7 +9,7 @@ export interface CreateEventI {
 }
 
 export interface EventI extends CreateEventI {
-  _id: string;
+  id: number;
 }
 export const postEvent = async (eventData: CreateEventI) => {
     try {

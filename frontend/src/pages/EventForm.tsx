@@ -51,8 +51,8 @@ const EventForm = ({ initialData, mode }: Props) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            if (mode === "edit" && initialData?._id) {
-                await updateEvent(initialData._id, eventData);
+            if (mode === "edit" && initialData?.id) {
+                await updateEvent(initialData.id, eventData);
                 console.log("Event updated!");
             } else {
                 await postEvent(eventData);
@@ -77,6 +77,7 @@ const EventForm = ({ initialData, mode }: Props) => {
     return (
         <section className="flex items-center justify-center min-h-screen">
             <form onSubmit={handleSubmit} className="flex flex-col border-2 items-left p-6 gap-y-4 w-1/2 shadow-sm shadow-black">
+                <h1 className="text-center text-lg">Create Event</h1>
                 <div className="flex flex-col items-left p-6 gap-y-4 md:w-1/2">
                     <div className="flex gap-x-4">
                         <label htmlFor="event-title">Event Title</label>

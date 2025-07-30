@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const deleteEvent = async (_id: String) => {
+export const deleteEvent = async (id: String) => {
     try {
-        const response = await axios.delete(`http://localhost:8000/api/events/${_id}`)
+        const response = await axios.delete(`http://localhost:8000/api/events/${id}`)
         console.log("Event deleted", response.data);
         return response
     } catch (error) {
