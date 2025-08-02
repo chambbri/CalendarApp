@@ -5,6 +5,7 @@ import express from 'express';
 import pool from './db/db';
 import cors from 'cors';
 import eventRoutes from './routes/eventRoutes';
+import userRoutes from './routes/userRoutes';
 
 console.log(eventRoutes);
 
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use('/api', eventRoutes);
+app.use('/api', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is up and running!');
