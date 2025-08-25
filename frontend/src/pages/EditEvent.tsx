@@ -27,10 +27,9 @@ const EditEvent = () => {
 
   return (
     <div>
-      <h2>Edit Event</h2>
       <EventForm
         initialData={event}
-        mode="edit"
+        mode="Edit"
       />
     </div>
   );

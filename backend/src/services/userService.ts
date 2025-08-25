@@ -49,7 +49,7 @@ export const loginUser = async (
             throw new Error('Invalid email or password');
         }
 
-        const passwordMatch = await comparePassword(password, userInfo.passwordHash);
+        const passwordMatch = await comparePassword(validatedData.password, userInfo.passwordHash);
         if (passwordMatch !== true) {
             throw new Error('Invalid email or password');
         };
@@ -76,7 +76,17 @@ const findUserByEmail = async (
 ): Promise<IUser | null> => {
     try {
         // search for user in DB and return null if nothing found else the result
-        const userQuery = `SELECT * FROM users WHERE email = $1`;
+        const userQuery = `
+            SELECT 
+                id, 
+                first_name as "firstName", 
+                last_name as "lastName", 
+                email, 
+                password_hash as "passwordHash", 
+                created_at as "createdAt"
+            FROM users 
+            WHERE email = $1
+        `;
         const result = await pool.query(userQuery, [email]);
         if (result.rows.length === 0) {
             return null;

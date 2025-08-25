@@ -27,8 +27,8 @@ CREATE TYPE role as ENUM ('Host', 'Admin', 'Invited');
 
 -- Junction table for events and users
 CREATE TABLE event_users (
-    user_id INTEGER NOT NULL REFERENCES users(id),
-    event_id INTEGER NOT NULL REFERENCES events(id),
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, event_id),
     rsvp rsvp NOT NULL,
     role role NOT NULL,

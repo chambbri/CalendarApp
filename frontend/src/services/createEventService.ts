@@ -5,7 +5,8 @@ export interface CreateEventI {
     description: string,
     startDate: Date;
     endDate: Date;
-    location: string
+    location: string;
+    hasSpecificTime?: boolean;
 }
 
 export interface EventI extends CreateEventI {
@@ -13,7 +14,12 @@ export interface EventI extends CreateEventI {
 }
 export const postEvent = async (eventData: CreateEventI) => {
     try {
-        const response = await axios.post('http://localhost:8000/api/events', eventData)
+        const token = localStorage.getItem('token'); // get token from local storage
+        const response = await axios.post('http://localhost:8000/api/events', eventData, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Add Authorization header
+            }
+        });
         console.log("Event created", response.data);
         return response.data
     } catch (error) {

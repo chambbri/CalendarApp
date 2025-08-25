@@ -7,19 +7,28 @@ export const createEvent = async (
     description: string, 
     startDate: Date, 
     endDate: Date, 
-    location: string
+    location: string,
+    createdBy: number
 ): Promise<IEvent> => {
     try {
-        const query = `
-            INSERT INTO events (title, description, start_date, end_date, location)
-            VALUES ($1, $2, $3, $4, $5)
+        // insert new event into events table
+        const eventQuery = `
+            INSERT INTO events (title, description, start_date, end_date, location, created_by)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING id, title, description, start_date as "startDate", end_date as "endDate", location
         `;
+        const values = [title, description || null, startDate, endDate, location || null, createdBy];
+        const result = await pool.query(eventQuery, values);
+        const newEvent = result.rows[0];
+
+        // insert new event into user_events table with user creating event as host with RSVP 'Yes'
+        const userEventQuery = `
+            INSERT INTO event_users (user_id, event_id, rsvp, role, invited_at, responded_at)
+            values ($1, $2, 'Yes', 'Host', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        `;
+        await pool.query(userEventQuery, [createdBy, newEvent.id]);
         
-        const values = [title, description || null, startDate, endDate, location || null];
-        const result = await pool.query(query, values);
-        
-        return result.rows[0];
+        return newEvent
     } catch (error) {
         console.error('Error creating event: ', error);
         throw error;
@@ -92,16 +101,21 @@ export const deleteEvent = async (id: string): Promise<IEvent | null> => {
 };
 
 
-// Get all events
-export const getAllEvents = async (): Promise<IEvent[]> => {
+// Get all events that the user is invited to (or created by)
+export const getAllEvents = async (userId: number): Promise<IEvent[]> => {
     try {
         const query = `
-            SELECT id, title, description, start_date as "startDate", end_date as "endDate", location
-            FROM events
-            ORDER BY start_date ASC
+            SELECT 
+                e.id, e.title, e.description, e.start_date as "startDate", 
+                e.end_date as "endDate", e.location,
+                eu.role, eu.rsvp
+            FROM events e
+            JOIN event_users eu ON e.id = eu.event_id
+            WHERE eu.user_id = $1
+            ORDER BY e.start_date ASC;
         `;
         
-        const result = await pool.query(query);
+        const result = await pool.query(query, [userId]);
         return result.rows;
     } catch (error) {
         console.error('Error finding events: ', error);

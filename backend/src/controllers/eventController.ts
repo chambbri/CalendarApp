@@ -4,7 +4,9 @@ import { createEvent, updateEvent, deleteEvent, getAllEvents, getEventById} from
 export const createEventHandler = async (req: Request, res: Response) => {
     try {
         const { title, description, startDate, endDate, location } = req.body;
-        const event = await createEvent(title, description, startDate, endDate, location);
+        const userId = req.userId!; // Get from auth middleware
+
+        const event = await createEvent(title, description, startDate, endDate, location, userId);
         res.status(201).json({ status: 'ok', event });
     } catch (error) {
         console.error('Error creating event: ', error);
@@ -50,7 +52,8 @@ export const deleteEventHandler = async (req: Request, res: Response) => {
 
 export const getEventsHandler = async (req: Request, res: Response) => {
     try {
-        const events = await getAllEvents();
+        const userId = req.userId!; // Get from auth middleware
+        const events = await getAllEvents(userId);
         res.status(200).json({ status: 'ok', events });
     } catch (error) {
         console.error('Error fetching events: ', error);

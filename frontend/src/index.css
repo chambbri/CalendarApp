@@ -5,8 +5,28 @@ body {
   line-height: 1.5;
   font-weight: 400;
 
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #bb6d5c;
+  color: #1f2937; /* Dark gray text for better readability */
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%); /* Subtle blue-gray gradient */
+  min-height: 100vh;
+}
+
+/* Optional: Add some base styles for consistency */
+* {
+  box-sizing: border-box;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Button Components */
+.btn-primary {
+  @apply rounded-lg pt-3 pb-3 pl-7 pr-7 border border-transparent font-medium bg-blue-600 text-white cursor-pointer hover:bg-blue-700 transition duration-250;
+}
+
+.btn-secondary {
+  @apply rounded-lg pt-3 pb-3 pl-7 pr-7 border border-gray-300 font-medium bg-white text-gray-700 cursor-pointer hover:bg-gray-50 transition duration-250;
 }
 
 

@@ -21,38 +21,42 @@ const Home = () => {
         fetchEvents();
     }, []);
 
-    const createEventButton = `
-        rounded-lg 
-        pt-3 pb-3 pl-7 pr-7 
-        border border-transparent 
-        font-medium 
-        bg-[#644444] 
-        cursor-pointer 
-        hover:border-white 
-        transition duration-250`;
-
     return (
-        <div>
-            <header className="flex flex-col items-center justify-center pt-16 pb-16">
-                <div className="flex flex-col items-center gap-y-4">
-                    <h1 className="text-center text-3xl font-bold">InviteMe</h1>
+        <div className="min-h-screen">
+            <header className="pt-20 pb-16 px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                        Welcome to Trippit
+                    </h1>
+                    <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                        Create and manage events effortlessly. Invite friends and keep track of everything in one place.
+                    </p>
                     <Link to="/eventform">
-                        <button className={createEventButton}>
+                        <button className="btn-primary text-lg px-8 py-4">
                             Create Event
                         </button>
                     </Link>
                 </div>
             </header>
-            <div className="flex flex-col pt-8 p-4 gap-y-4">
-                <h2 className="font-semibold">Your Events</h2>
-                <div>
+            <main className="max-w-6xl mx-auto px-4 pb-16">
+                <div className="rounded-xl shadow-lg p-6 bg-white/20 backdrop-blur-sm border border-white/30">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-semibold text-gray-900">Your Events</h2>
+                        <Link to="/eventform">
+                            <button className="btn-secondary">+ New Event</button>
+                        </Link>
+                    </div>
+                    
                     {events.length > 0 ? (
-                            <EventList events={events} />
-                        ) : (
-                            <p>No events found.</p>
-                        )}
+                        <EventList events={events} />
+                    ) : (
+                        <div className="text-center py-12">
+                            <p className="text-gray-500 text-lg mb-4">No events yet</p>
+                            <p className="text-gray-400">Create your first event to get started!</p>
+                        </div>
+                    )}
                 </div>
-            </div>
+            </main>
         </div>
     );
 };

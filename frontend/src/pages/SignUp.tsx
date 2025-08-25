@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createAccount, CreateUserI } from "../services/createAccountService";
 import { loginUser } from "../services/loginService";
 
-const SignUp = () => {
+// for automatically loggin a user in after they have successfully signed up
+interface SignUpProps {
+  setIsAuthenticated: (value: boolean) => void;
+}
+
+const SignUp = ({ setIsAuthenticated }: SignUpProps) => {
     // sign up parameters
     const [userData, setUserData] = useState<CreateUserI>({
             firstName: "",
@@ -12,7 +17,6 @@ const SignUp = () => {
             password: "",
     });
 
-    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,10 +27,10 @@ const SignUp = () => {
             const loginResponse = await loginUser(userData.email, userData.password);
 
             // establish token
-            localStorage.setItem('token', loginResponse.data.result.token);
-            localStorage.setItem('user', JSON.stringify(loginResponse.data.result.user));
+            localStorage.setItem('token', loginResponse.token);
+            localStorage.setItem('user', JSON.stringify(loginResponse.user));
 
-            navigate('/');
+            setIsAuthenticated(true);
         } catch (error) {
             console.error("Failed to create account", error);
         }
@@ -36,67 +40,108 @@ const SignUp = () => {
         setUserData({ ...userData, [e.target.name]: e.target.value });
     };
 
-    // button formatting
-    const createAccountButton = `
-        rounded-lg 
-        pt-3 pb-3 pl-7 pr-7 
-        border border-transparent 
-        font-medium 
-        bg-[#644444] 
-        cursor-pointer 
-        hover:border-white 
-        transition duration-250`;
 
     return (
-        <section className="flex items-center justify-center min-h-screen">
-            <form onSubmit={handleSubmit} className="flex flex-col border-2 p-6 gap-y-4 shadow-sm shadow-black">
-                <div className="flex gap-x-4">
-                        <label htmlFor="firstname">First Name</label>
-                        <input 
-                            type="text" 
-                            name="firstName" 
-                            id="firstname" 
-                            value={userData.firstName}
-                            onChange={handleChange}
-                            required 
-                            className="rounded border"/>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+            <div className="w-full max-w-md">
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Join Trippit</h1>
+                    <p className="text-gray-600">Create your account to start planning events</p>
                 </div>
-                <div className="flex gap-x-4">
-                        <label htmlFor="lastname">Last Name</label>
-                        <input 
-                            type="text" 
-                            name="lastName" 
-                            id="lastname" 
-                            value={userData.lastName}
-                            onChange={handleChange}
-                            required 
-                            className="rounded border"/>
-                </div>
-                <div className="flex gap-x-4">
-                        <label htmlFor="email">Email</label>
-                        <input 
-                            type="email" 
-                            name="email" 
-                            id="email" 
-                            value={userData.email}
-                            onChange={handleChange}
-                            required 
-                            className="rounded border"/>
-                </div>
-                <div className="flex gap-x-4">
-                        <label htmlFor="password">Password</label>
-                        <input 
-                            type="password" 
-                            name="password" 
-                            id="password" 
-                            value={userData.password}
-                            onChange={handleChange}
-                            required 
-                            className="rounded border"/>
-                </div>
-                <button type="submit" className={createAccountButton}>Create Account</button>
-            </form>
-        </section>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-8 border border-white/20">
+                    <div className="space-y-6">
+                        {/* Name Fields */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
+                                    First Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="firstName" 
+                                    id="firstname" 
+                                    value={userData.firstName}
+                                    onChange={handleChange}
+                                    required 
+                                    placeholder="John"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
+                                    Last Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="lastName" 
+                                    id="lastname" 
+                                    value={userData.lastName}
+                                    onChange={handleChange}
+                                    required 
+                                    placeholder="Doe"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Email */}
+                        <div className="space-y-2">
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email Address
+                            </label>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                id="email" 
+                                value={userData.email}
+                                onChange={handleChange}
+                                required 
+                                placeholder="john@example.com"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            />
+                        </div>
+
+                        {/* Password */}
+                        <div className="space-y-2">
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                Password
+                            </label>
+                            <input 
+                                type="password" 
+                                name="password" 
+                                id="password" 
+                                value={userData.password}
+                                onChange={handleChange}
+                                required 
+                                placeholder="Create a strong password"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            />
+                        </div>
+
+                        {/* Submit Button */}
+                        <button 
+                            type="submit" 
+                            className="w-full btn-primary py-3 text-lg font-medium"
+                        >
+                            Create Account
+                        </button>
+                    </div>
+
+                    {/* Footer Links */}
+                    <div className="mt-6 text-center space-y-2">
+                        <p className="text-sm text-gray-600">
+                            Already have an account?{' '}
+                            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+                                Login
+                            </Link>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
     )
 };
 
